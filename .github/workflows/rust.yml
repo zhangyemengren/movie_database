@@ -1,51 +1,50 @@
-#name: Rust
-#
-#on:
-#    push:
-#        branches: [ "main" ]
-#    pull_request:
-#        branches: [ "main" ]
-#
-#env:
-#    CARGO_TERM_COLOR: always
-#
-#jobs:
-#    fmt:
-#        runs-on: ubuntu-latest
-#        steps:
-#            - uses: actions/checkout@v4
-#            - uses: dtolnay/rust-toolchain@stable
-#              with:
-#                  components: rustfmt
-#            - name: Run cargo fmt
-#              run: |
-#                  cargo fmt --all -- --check
-#    test:
-#        runs-on: ubuntu-latest
-#        services:
-#            mysql:
-#                image: mysql:latest
-#                env:
-#                    MYSQL_ROOT_PASSWORD: qwer1234
-#                    MYSQL_DATABASE: nba-data
-#                ports:
-#                    - 3306:3306
-#        steps:
-#            - uses: actions/checkout@v4
-#            - uses: dtolnay/rust-toolchain@stable
-#            - name: Install sqlx-cli
-#              run: |
-#                  cargo install sqlx-cli
-#            - name: Migrate database
-#              run: |
-#                  cd server
-#                  sqlx database create
-#                  sqlx migrate run
-#            - name: Run cargo test & clippy
-#              env:
-#                  API_KEY: ${{ secrets.API_KEY }}
-#              run: |
-#                  cargo run --bin load-data
-#                  cargo test &
-#                  cargo clippy --all-targets --all-features -- -D warnings &
-#                  wait
+name: Rust
+
+on:
+    push:
+        branches: [ "main" ]
+    pull_request:
+        branches: [ "main" ]
+
+env:
+    CARGO_TERM_COLOR: always
+
+jobs:
+    fmt:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: dtolnay/rust-toolchain@stable
+              with:
+                  components: rustfmt
+            - name: Run cargo fmt
+              run: |
+                  cargo fmt --all -- --check
+    test:
+        runs-on: ubuntu-latest
+        services:
+            mysql:
+                image: mysql:latest
+                env:
+                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_DATABASE: movie_db
+                ports:
+                    - 3306:3306
+        steps:
+            - uses: actions/checkout@v4
+            - uses: dtolnay/rust-toolchain@stable
+            - name: Install sqlx-cli
+              run: |
+                  cargo install sqlx-cli
+            - name: Migrate database
+              run: |
+                  cd server
+                  sqlx database create
+                  sqlx migrate run
+            - name: Run cargo test & clippy
+              env:
+                  API_KEY: ${{ secrets.API_KEY }}
+              run: |
+                  cargo test &
+                  cargo clippy --all-targets --all-features -- -D warnings &
+                  wait

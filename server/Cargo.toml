@@ -12,3 +12,4 @@ reqwest = { workspace = true }
 axum = {version = "0.7", features = ["macros"]}
 sqlx = {version = "0.7", features = ["mysql", "runtime-tokio"]}
 dotenvy = "0.15"
+tower = {version = "0.4", features = ["util"]}

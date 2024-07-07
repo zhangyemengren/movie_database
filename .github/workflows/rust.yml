@@ -39,7 +39,7 @@ jobs:
                   cargo install sqlx-cli
             - name: Migrate database
               env:
-                  DATABASE_URL: ${{ env.DATABASE_URL }}
+                  DATABASE_URL: ${{ vars.DATABASE_URL }}
               run: |
                   cd server
                   sqlx database create

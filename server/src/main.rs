@@ -1,4 +1,4 @@
-use axum::{routing::get, Router, debug_handler};
+use axum::{debug_handler, routing::get, Router};
 use reqwest;
 use reqwest::header::HeaderMap;
 

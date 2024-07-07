@@ -1,10 +1,21 @@
-use axum::{routing::get, Router};
+use axum::{routing::get, Router, debug_handler};
 use reqwest;
 use reqwest::header::HeaderMap;
 
+fn get_env_var(key: &str) -> String {
+    dotenvy::dotenv().ok();
+    if let Ok(v) = std::env::var(key) {
+        return v;
+    }
+
+    "".to_string()
+}
+
+#[debug_handler]
 async fn root() -> &'static str {
     let client = reqwest::Client::new();
-    let key = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZTRjMmUzNzIwY2EzNjc5ZTdkMzZlYTlmMmU0YjY3ZCIsIm5iZiI6MTcyMDI2NDU3Ny43MTY1OSwic3ViIjoiNjU0Y2Q1ODMxYWMyOTI3YjJkY2ZmYzZjIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.g61yEF8VbD8zgFbnS28nXRSmbrHm9lE-yB2z-mceKJQ";
+    let key = get_env_var("TMDB_API_KEY");
+    println!("key: {}", key);
     let h1 = format!("Bearer {}", key);
     let mut headers = HeaderMap::new();
     headers.insert("Authorization", h1.parse().unwrap());

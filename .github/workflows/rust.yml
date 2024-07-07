@@ -35,8 +35,7 @@ jobs:
             - uses: dtolnay/rust-toolchain@stable
             - uses: Swatinem/rust-cache@v2
             - name: Install sqlx-cli
-              run: |
-                  cargo install sqlx-cli
+              run: cargo install sqlx-cli
             - name: Migrate database
               env:
                   DATABASE_URL: ${{ vars.DATABASE_URL }}
@@ -44,10 +43,13 @@ jobs:
                   cd server
                   sqlx database create
                   sqlx migrate run
-            - name: Run cargo test & clippy
+            - name: Run clippy
               env:
+                  DATABASE_URL: ${{ vars.DATABASE_URL }}
                   API_KEY: ${{ secrets.TMDB_API_KEY }}
-              run: |
-                  cargo test &
-                  cargo clippy --all-targets --all-features -- -D warnings &
-                  wait
+              run: cargo clippy --workspace --all-targets --all-features -- -D warnings
+            - name: Run tests
+              env:
+                  DATABASE_URL: ${{ vars.DATABASE_URL }}
+                  API_KEY: ${{ secrets.TMDB_API_KEY }}
+              run: cargo test --workspace --all-features --all-targets

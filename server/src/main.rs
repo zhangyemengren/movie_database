@@ -1,5 +1,4 @@
 use axum::{debug_handler, routing::get, Router};
-use reqwest;
 use reqwest::header::HeaderMap;
 
 fn get_env_var(key: &str) -> String {

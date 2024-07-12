@@ -9,9 +9,9 @@ CREATE TABLE `weekly_trending_movies`
     poster_path VARCHAR(255),
     adult BOOLEAN,
     original_language VARCHAR(10),
-    genre_ids JSON,
+    genre_ids VARCHAR(255),
     popularity FLOAT,
-    release_date DATE,
+    release_date VARCHAR(20),
     vote_average FLOAT,
     vote_count INT UNSIGNED
 )

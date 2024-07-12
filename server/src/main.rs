@@ -1,7 +1,5 @@
 use server::new_app;
 
-
-
 #[tokio::main]
 async fn main() {
     let app = new_app().await;

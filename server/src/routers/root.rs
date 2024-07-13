@@ -32,11 +32,43 @@ pub struct Movie {
     vote_count: u32,
 }
 pub async fn get_weekly_trending(State(pool): State<MySqlPool>) -> Json<Vec<Movie>> {
-    let search = sqlx::query!(r#"select id from weekly_trending_movies"#)
+    let search = sqlx::query!(r#"select * from weekly_trending_movies"#)
         .fetch_all(&pool)
         .await
         .unwrap();
-    if search.len() != 0 {}
+    if !search.is_empty() {
+        return search
+            .into_iter()
+            .map(|s| {
+                return Movie {
+                    backdrop_path: s.backdrop_path.unwrap_or("".to_string()),
+                    id: s.id,
+                    title: s.title.unwrap_or("".to_string()),
+                    original_title: s.original_title.unwrap_or("".to_string()),
+                    overview: s.overview.unwrap_or("".to_string()),
+                    poster_path: s.poster_path.unwrap_or("".to_string()),
+                    adult: if let Some(x) = s.adult {
+                        x != 0
+                    } else {
+                        false
+                    },
+                    original_language: s.original_language.unwrap_or("".to_string()),
+                    genre_ids: if let Some(x) = s.genre_ids {
+                        x.split(',')
+                            .filter_map(|id| id.trim().parse::<u32>().ok())
+                            .collect()
+                    } else {
+                        vec![]
+                    },
+                    popularity: s.popularity.unwrap_or(0.0),
+                    release_date: s.release_date.unwrap_or("".to_string()),
+                    vote_average: s.vote_average.unwrap_or(0.0),
+                    vote_count: s.vote_count.unwrap_or(0),
+                };
+            })
+            .collect::<Vec<Movie>>()
+            .into();
+    }
     println!("{:?}", search);
     let client = reqwest::Client::new();
     let res = client

@@ -9,7 +9,7 @@ use tower::ServiceExt;
 
 pub async fn do_tmdb_request(uri: &str, body: Option<Body>) -> Response {
     let body = body.unwrap_or(Body::empty());
-    let app = new_app();
+    let app = new_app().await;
     let headers = get_author_header();
     app.oneshot(
         Request::builder()

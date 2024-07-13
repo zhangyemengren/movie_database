@@ -47,11 +47,7 @@ pub async fn get_weekly_trending(State(pool): State<MySqlPool>) -> Json<Vec<Movi
                     original_title: s.original_title.unwrap_or("".to_string()),
                     overview: s.overview.unwrap_or("".to_string()),
                     poster_path: s.poster_path.unwrap_or("".to_string()),
-                    adult: if let Some(x) = s.adult {
-                        x != 0
-                    } else {
-                        false
-                    },
+                    adult: if let Some(x) = s.adult { x != 0 } else { false },
                     original_language: s.original_language.unwrap_or("".to_string()),
                     genre_ids: if let Some(x) = s.genre_ids {
                         x.split(',')

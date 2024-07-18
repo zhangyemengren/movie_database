@@ -19,7 +19,7 @@ Cargo.lock
 .fleet
 
 # web
-/dist
+**/dist
 # database
 /database
 

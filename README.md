@@ -12,3 +12,6 @@ docker run -d \
 -p 3306:3306 \
 mysql:latest
 ```
+
+## client
+trunk serve --port 5432 --open

@@ -8,3 +8,4 @@ console_error_panic_hook = "0.1.7"
 leptos = { version = "0.6.12", features = ["csr"] }
 log = "0.4.22"
 console_log = "1"
+leptos_router = { version = "0.6.12", features = ["csr"] }

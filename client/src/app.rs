@@ -2,6 +2,7 @@ use leptos::{component, IntoView, view};
 use leptos_router::{Route, Router, Routes};
 use crate::pages::{Index, MovieDetail};
 
+
 #[component]
 pub fn App() -> impl IntoView{
     view! {

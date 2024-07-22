@@ -14,4 +14,6 @@ mysql:latest
 ```
 
 ## client
-trunk serve --port 5432 --open
+### RUSTFLAGS 启用web_sys unstable api
+RUSTFLAGS=--cfg=web_sys_unstable_apis trunk serve --port 5432 --open
+
